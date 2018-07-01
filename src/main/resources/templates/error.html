@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Oops!</title>
+</head>
+<html>
+<div class="errorPage">
+    <span class="oops">Oops!</span><br/>
+    <p>There seems to be a problem with the page you requested
+        (<span th:text="${path}"></span>).</p>
+    <p th:text="${'Details: ' + message}"></p>
+    <p th:text="${'error:' + error}"></p>
+</div>
+</html>
+</html>
