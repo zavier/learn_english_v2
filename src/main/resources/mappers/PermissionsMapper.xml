@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zavier.scaffold.dao.PermissionsMapper">
-  <resultMap id="BaseResultMap" type="com.zavier.scaffold.pojo.Permissions">
+<mapper namespace="com.zavier.lenglish.dao.PermissionsMapper">
+  <resultMap id="BaseResultMap" type="com.zavier.lenglish.pojo.Permissions">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="permission" jdbcType="VARCHAR" property="permission" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
@@ -17,7 +17,7 @@
     from permissions
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectByRolesName" resultType="com.zavier.scaffold.pojo.Permissions">
+  <select id="selectByRolesName" resultType="com.zavier.lenglish.pojo.Permissions">
     select
     p.id as id, p.permission as permission, p.gmt_create as gmtCreate, p.gmt_modified as gmtModified, p.is_deleted as isDeleted
     from permissions as p
@@ -31,13 +31,13 @@
     delete from permissions
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zavier.scaffold.pojo.Permissions">
+  <insert id="insert" parameterType="com.zavier.lenglish.pojo.Permissions">
     insert into permissions (id, permission, gmt_create, 
       gmt_modified, is_deleted)
     values (#{id,jdbcType=INTEGER}, #{permission,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.zavier.scaffold.pojo.Permissions">
+  <insert id="insertSelective" parameterType="com.zavier.lenglish.pojo.Permissions">
     insert into permissions
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -74,7 +74,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zavier.scaffold.pojo.Permissions">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zavier.lenglish.pojo.Permissions">
     update permissions
     <set>
       <if test="permission != null">
@@ -92,7 +92,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zavier.scaffold.pojo.Permissions">
+  <update id="updateByPrimaryKey" parameterType="com.zavier.lenglish.pojo.Permissions">
     update permissions
     set permission = #{permission,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},

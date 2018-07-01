@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zavier.scaffold.dao.RolesPermissionsMapper">
-  <resultMap id="BaseResultMap" type="com.zavier.scaffold.pojo.RolesPermissions">
+<mapper namespace="com.zavier.lenglish.dao.RolesPermissionsMapper">
+  <resultMap id="BaseResultMap" type="com.zavier.lenglish.pojo.RolesPermissions">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="role_id" jdbcType="INTEGER" property="roleId" />
     <result column="permission_id" jdbcType="INTEGER" property="permissionId" />
@@ -22,7 +22,7 @@
     delete from roles_permissions
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zavier.scaffold.pojo.RolesPermissions">
+  <insert id="insert" parameterType="com.zavier.lenglish.pojo.RolesPermissions">
     insert into roles_permissions (id, role_id, permission_id, 
       gmt_create, gmt_modified, is_deleted
       )
@@ -30,7 +30,7 @@
       #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=TINYINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zavier.scaffold.pojo.RolesPermissions">
+  <insert id="insertSelective" parameterType="com.zavier.lenglish.pojo.RolesPermissions">
     insert into roles_permissions
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -73,7 +73,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zavier.scaffold.pojo.RolesPermissions">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zavier.lenglish.pojo.RolesPermissions">
     update roles_permissions
     <set>
       <if test="roleId != null">
@@ -94,7 +94,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zavier.scaffold.pojo.RolesPermissions">
+  <update id="updateByPrimaryKey" parameterType="com.zavier.lenglish.pojo.RolesPermissions">
     update roles_permissions
     set role_id = #{roleId,jdbcType=INTEGER},
       permission_id = #{permissionId,jdbcType=INTEGER},

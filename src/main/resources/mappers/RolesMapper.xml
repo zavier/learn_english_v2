@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zavier.scaffold.dao.RolesMapper">
-  <resultMap id="BaseResultMap" type="com.zavier.scaffold.pojo.Roles">
+<mapper namespace="com.zavier.lenglish.dao.RolesMapper">
+  <resultMap id="BaseResultMap" type="com.zavier.lenglish.pojo.Roles">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="role_name" jdbcType="VARCHAR" property="roleName" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
@@ -17,7 +17,7 @@
     from roles
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectRolesByUserName" resultType="com.zavier.scaffold.pojo.Roles" parameterType="java.lang.String">
+  <select id="selectRolesByUserName" resultType="com.zavier.lenglish.pojo.Roles" parameterType="java.lang.String">
     select
     r.id as id, r.role_name as roleName, r.gmt_create as gmtCreate, r.gmt_modified as gmtModifid, r.is_deleted as isDeleted
     from users as u
@@ -28,13 +28,13 @@
     delete from roles
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zavier.scaffold.pojo.Roles">
+  <insert id="insert" parameterType="com.zavier.lenglish.pojo.Roles">
     insert into roles (id, role_name, gmt_create, 
       gmt_modified, is_deleted)
     values (#{id,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.zavier.scaffold.pojo.Roles">
+  <insert id="insertSelective" parameterType="com.zavier.lenglish.pojo.Roles">
     insert into roles
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -71,7 +71,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zavier.scaffold.pojo.Roles">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zavier.lenglish.pojo.Roles">
     update roles
     <set>
       <if test="roleName != null">
@@ -89,7 +89,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zavier.scaffold.pojo.Roles">
+  <update id="updateByPrimaryKey" parameterType="com.zavier.lenglish.pojo.Roles">
     update roles
     set role_name = #{roleName,jdbcType=VARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},

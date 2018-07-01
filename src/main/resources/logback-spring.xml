@@ -27,7 +27,7 @@
         </filter>
     </appender>
 
-    <logger name="com.zavier.scaffold.dao" level="DEBUG" additivity="false">
+    <logger name="com.zavier.lenglish.dao" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 

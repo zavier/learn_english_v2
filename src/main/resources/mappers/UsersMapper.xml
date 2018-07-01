@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zavier.scaffold.dao.UsersMapper">
-  <resultMap id="BaseResultMap" type="com.zavier.scaffold.pojo.Users">
+<mapper namespace="com.zavier.lenglish.dao.UsersMapper">
+  <resultMap id="BaseResultMap" type="com.zavier.lenglish.pojo.Users">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
@@ -29,7 +29,7 @@
     delete from users
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.zavier.scaffold.pojo.Users">
+  <insert id="insert" parameterType="com.zavier.lenglish.pojo.Users">
     insert into users (id, username, password, 
       password_salt, gmt_create, gmt_modify, 
       is_deleted)
@@ -37,7 +37,7 @@
       #{passwordSalt,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModify,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.zavier.scaffold.pojo.Users">
+  <insert id="insertSelective" parameterType="com.zavier.lenglish.pojo.Users">
     insert into users
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -86,7 +86,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zavier.scaffold.pojo.Users">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zavier.lenglish.pojo.Users">
     update users
     <set>
       <if test="username != null">
@@ -110,7 +110,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zavier.scaffold.pojo.Users">
+  <update id="updateByPrimaryKey" parameterType="com.zavier.lenglish.pojo.Users">
     update users
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
