@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @RestController
 @Slf4j
 public class CommonController {
@@ -46,7 +49,7 @@ public class CommonController {
     }
 
     @PostMapping(value = "/sign-in")
-    public ResultBean<String> signIn(@RequestBody Users users) {
+    public ResultBean<String> signIn(HttpSession session, @RequestBody Users users) {
         userService.signIn(users);
         return ResultBean.createBySuccess("登录成功");
     }

@@ -15,6 +15,8 @@ public interface UserService {
 
     Users getUserInfo(String username);
 
+    Users getCurrentUser();
+
     Users updateInfo(Users users);
 
     void resetPassword(Users users);

@@ -1,5 +1,7 @@
 package com.zavier.lenglish;
 
+import com.alibaba.fastjson.JSON;
+import com.zavier.lenglish.pojo.Knowledge;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,6 @@ public class LearnEnglishApplicationTests {
                 .andReturn().getResponse().getContentAsString();
         System.out.println("===============");
         System.out.println(content);
-
     }
 
 }

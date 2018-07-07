@@ -27,6 +27,7 @@ public class SecurityConfig {
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
 
         chainDefinition.addPathDefinition("/user/**", "authc");
+        chainDefinition.addPathDefinition("/knowledge/**", "authc");
         chainDefinition.addPathDefinition("/admin/**", "authc, roles[admin]");
         chainDefinition.addPathDefinition("/docs/**", "authc, perms[document:read]");
         chainDefinition.addPathDefinition("/**", "anon");

@@ -2,6 +2,7 @@ package com.zavier.lenglish.service.impl;
 
 import com.zavier.lenglish.common.BusinessProcessException;
 import com.zavier.lenglish.common.EncryptConstants;
+import com.zavier.lenglish.common.util.CacheUtil;
 import com.zavier.lenglish.common.util.ValidatorUtil;
 import com.zavier.lenglish.dao.UserRolesMapper;
 import com.zavier.lenglish.dao.UsersMapper;
@@ -65,8 +66,19 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isBlank(username)) {
             return null;
         }
-        Users users = usersMapper.selectByUserName(username);
-        return users;
+        Users userInfo = CacheUtil.getUserInfo(username);
+        if (userInfo == null) {
+            userInfo = usersMapper.selectByUserName(username);
+            CacheUtil.putUserInfo(userInfo);
+        }
+        return userInfo;
+    }
+
+    @Override
+    public Users getCurrentUser() {
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+        return getUserInfo(username);
     }
 
     @Override
