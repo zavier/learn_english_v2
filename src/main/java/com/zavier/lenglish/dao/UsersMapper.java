@@ -17,5 +17,9 @@ public interface UsersMapper {
 
     int updateByPrimaryKeySelective(Users record);
 
+    int updateBaseInfoByUsernameSelective(Users record);
+
+    int updatePassword(Users users);
+
     int updateByPrimaryKey(Users record);
 }

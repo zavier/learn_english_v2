@@ -1,17 +1,16 @@
 package com.zavier.lenglish.service.impl;
 
+import com.zavier.lenglish.common.BusinessProcessException;
 import com.zavier.lenglish.common.EncryptConstants;
-import com.zavier.lenglish.common.ResultBean;
+import com.zavier.lenglish.common.util.ValidatorUtil;
 import com.zavier.lenglish.dao.UserRolesMapper;
 import com.zavier.lenglish.dao.UsersMapper;
 import com.zavier.lenglish.pojo.Users;
 import com.zavier.lenglish.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.CryptoException;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
@@ -28,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private UserRolesMapper userRolesMapper;
     @Autowired
     private Mapper mapper;
+    @Autowired
+    private ValidatorUtil validatorUtil;
 
     /**
      * 对用户密码进行加密（加盐）
@@ -57,5 +58,38 @@ public class UserServiceImpl implements UserService {
             UsernamePasswordToken token = new UsernamePasswordToken(users.getUsername(), users.getPassword(), false);
             subject.login(token);
         }
+    }
+
+    @Override
+    public Users getUserInfo(String username) {
+        if (StringUtils.isBlank(username)) {
+            return null;
+        }
+        Users users = usersMapper.selectByUserName(username);
+        return users;
+    }
+
+    @Override
+    public Users updateInfo(Users users) {
+        if (users == null || StringUtils.isBlank(users.getUsername())) {
+            throw new BusinessProcessException("参数不能为空");
+        }
+        usersMapper.updateBaseInfoByUsernameSelective(users);
+        return users;
+    }
+
+    @Override
+    public void resetPassword(Users users) {
+        if (users == null
+                || StringUtils.isBlank(users.getUsername())
+                || StringUtils.isBlank(users.getPassword())) {
+            throw new BusinessProcessException("参数不能为空");
+        }
+        Users encryptUserInfo = encryptUserInfo(users);
+        Users newPwdUserInfo = new Users();
+        newPwdUserInfo.setUsername(users.getUsername());
+        newPwdUserInfo.setPassword(encryptUserInfo.getPassword());
+        newPwdUserInfo.setPasswordSalt(encryptUserInfo.getPasswordSalt());
+        usersMapper.updatePassword(newPwdUserInfo);
     }
 }

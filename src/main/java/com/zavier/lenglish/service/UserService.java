@@ -12,4 +12,10 @@ public interface UserService {
     Users encryptUserInfo(Users users);
 
     void signIn(Users users);
+
+    Users getUserInfo(String username);
+
+    Users updateInfo(Users users);
+
+    void resetPassword(Users users);
 }
