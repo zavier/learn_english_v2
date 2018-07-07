@@ -1,5 +1,6 @@
 package com.zavier.lenglish.web;
 
+import com.zavier.lenglish.common.ResultBean;
 import com.zavier.lenglish.common.util.ValidatorUtil;
 import com.zavier.lenglish.pojo.Knowledge;
 import com.zavier.lenglish.pojo.Users;
@@ -25,33 +26,48 @@ public class KnowledgeController {
     private ValidatorUtil validatorUtil;
 
     @PostMapping("add")
-    public Knowledge add(@RequestBody Knowledge knowledge) {
+    public ResultBean<Knowledge> add(@RequestBody Knowledge knowledge) {
         validatorUtil.validate(knowledge);
         Users userInfo = userService.getCurrentUser();
         Integer userId = userInfo.getId();
         knowledge.setCreator(userId);
         knowledge.setModifier(userId);
-        return knowledgeService.add(knowledge);
+        Knowledge res = knowledgeService.add(knowledge);
+        return ResultBean.createBySuccess(res);
     }
 
     @PostMapping("update")
-    public void update(@RequestBody Knowledge knowledge) {
+    public ResultBean<String> update(@RequestBody Knowledge knowledge) {
         Users currentUser = userService.getCurrentUser();
         knowledge.setModifier(currentUser.getId());
         knowledgeService.update(knowledge);
+        return ResultBean.createBySuccess();
     }
 
     @GetMapping("delete")
-    public void delete(@RequestParam Integer id) {
+    public ResultBean<String> delete(@RequestParam Integer id) {
         Users currentUser = userService.getCurrentUser();
         Knowledge knowledge = new Knowledge();
         knowledge.setId(id);
         knowledge.setModifier(currentUser.getId());
         knowledgeService.delete(knowledge);
+        return ResultBean.createBySuccess();
     }
 
     @GetMapping("get")
-    public Knowledge get(@RequestParam Integer id) {
-        return knowledgeService.get(id);
+    public ResultBean<Knowledge> get(@RequestParam Integer id) {
+        Knowledge knowledge = knowledgeService.get(id);
+        return ResultBean.createBySuccess(knowledge);
+    }
+
+    @GetMapping("publish")
+    public ResultBean<String> publish(@RequestParam Integer id) {
+        Users currentUser = userService.getCurrentUser();
+        Knowledge knowledge = new Knowledge();
+        knowledge.setModifier(currentUser.getId());
+        knowledge.setId(id);
+        knowledge.setIsPublished((byte) 1);
+        knowledgeService.update(knowledge);
+        return ResultBean.createBySuccess();
     }
 }

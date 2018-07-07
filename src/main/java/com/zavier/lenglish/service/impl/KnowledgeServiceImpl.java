@@ -39,4 +39,12 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     public Knowledge get(Integer id) {
         return knowledgeMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public void publish(Knowledge knowledge) {
+        int i = knowledgeMapper.updateByPrimaryKeySelective(knowledge);
+        if (i != 1) {
+            throw new BusinessProcessException("发布失败, knowledge:" + JSON.toJSONString(knowledge));
+        }
+    }
 }

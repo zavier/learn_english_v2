@@ -10,4 +10,6 @@ public interface KnowledgeService {
     void delete(Knowledge knowledge);
 
     Knowledge get(Integer id);
+
+    void publish(Knowledge knowledge);
 }
