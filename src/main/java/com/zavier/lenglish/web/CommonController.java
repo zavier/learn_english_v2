@@ -1,6 +1,7 @@
 package com.zavier.lenglish.web;
 
 import com.zavier.lenglish.common.ResultBean;
+import com.zavier.lenglish.common.util.ValidatorUtil;
 import com.zavier.lenglish.dao.UsersMapper;
 import com.zavier.lenglish.pojo.Users;
 import com.zavier.lenglish.service.UserService;
@@ -29,42 +30,33 @@ public class CommonController {
     private UsersMapper usersMapper;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ValidatorUtil validatorUtil;
 
-    @GetMapping(value = "/error")
-    public ResultBean<String> error(Exception e) {
-        log.error("发生异常", e);
-        return ResultBean.createByErrorMessage("系统内部错误");
-    }
+//    @GetMapping(value = "/error")
+//    public ResultBean<String> error(Exception e) {
+//        log.error("发生异常", e);
+//        return ResultBean.createByErrorMessage("系统内部错误");
+//    }
 
     @GetMapping(value = "/unauthorication")
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ResultBean<String> unauthorication() {
-        return ResultBean.createByNotLogin();
+        return ResultBean.createByErrorMessage("未登录");
     }
 
     @PostMapping(value = "/sign-in")
     public ResultBean<String> signIn(@RequestBody Users users) {
-        Subject subject = SecurityUtils.getSubject();
-        if(!subject.isAuthenticated()) {
-            UsernamePasswordToken token = new UsernamePasswordToken(users.getUsername(), users.getPassword(), false);
-            try {
-                subject.login(token);
-            } catch (UnknownAccountException ae) {
-                log.info("用户名不存在");
-                return ResultBean.createByNotLogin();
-            } catch (AuthenticationException e) {
-                log.info("认证失败");
-                return ResultBean.createByNotLogin();
-            }
-        }
-        return ResultBean.createBySuccess();
+        userService.signIn(users);
+        return ResultBean.createBySuccess("登录成功");
     }
 
     @PostMapping(value = "sign-up")
     public ResultBean<String> signUp(@RequestBody Users users) {
+        validatorUtil.validate(users);
         Users encryptUserInfo = userService.encryptUserInfo(users);
         usersMapper.insert(encryptUserInfo);
-        return ResultBean.createBySuccess();
+        return ResultBean.createBySuccess("注册成功");
     }
 
     @GetMapping(value = "/secure")

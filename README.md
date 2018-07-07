@@ -6,6 +6,7 @@
 - MySQL
 - MyBatis / Mybatis Generator / Mybatis PageHelper
 - Shiro
+- Dozer
 
 
 注意：
@@ -15,3 +16,12 @@
 4. Mapper 接口需要添加 @Mapper 注解
 5. 数据库操作时不要忘记使用事物注解
 6. 分页查询时使用 MyBatis 的分页查询插件
+7. Bean 间复制使用 dozer
+8. 使用 Hibernate Validator 校验bean属性
+
+修改表字段后，需要修改
+1. mapper 文件
+2. 对应的实体类文件
+
+问题：
+1. service如果没有接口使用下会报错

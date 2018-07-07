@@ -9,9 +9,14 @@ import java.util.Date;
 public class Users {
     private Integer id;
 
+    @NotNull
     private String username;
-
+    @NotNull
     private String password;
+    @NotNull
+    private String email;
+    @NotNull
+    private String mobile;
 
     private String passwordSalt;
 

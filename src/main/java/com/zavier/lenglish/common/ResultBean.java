@@ -64,11 +64,4 @@ public class ResultBean<T> implements Serializable {
         return new ResultBean<>(false,errorMessage);
     }
 
-    public static <T> ResultBean<T> createByNotLogin() {
-        return new ResultBean<>(false, "未登录");
-    }
-
-    public static <T> ResultBean<T> createByNotLoginMessage(String message) {
-        return new ResultBean<>(false, message);
-    }
 }

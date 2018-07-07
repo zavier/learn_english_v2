@@ -10,4 +10,6 @@ public interface UserService {
      * @return
      */
     Users encryptUserInfo(Users users);
+
+    void signIn(Users users);
 }

@@ -31,10 +31,10 @@
   </delete>
   <insert id="insert" parameterType="com.zavier.lenglish.pojo.Users">
     insert into users (username, password,
-      password_salt, gmt_create, gmt_modify, 
+      password_salt, email, mobile, gmt_create, gmt_modify,
       is_deleted)
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{passwordSalt,jdbcType=VARCHAR}, now(), now(), 0)
+      #{passwordSalt,jdbcType=VARCHAR}, #{email, jdbcType=VARCHAR}, #{mobile, jdbcType=VARCHAR}, now(), now(), 0)
   </insert>
   <insert id="insertSelective" parameterType="com.zavier.lenglish.pojo.Users">
     insert into users

@@ -1,6 +1,8 @@
 package com.zavier.lenglish.common;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -43,6 +45,12 @@ public class ExceptionWrapper {
             resultBean = (ResultBean) pjp.proceed();
             long endTime = System.currentTimeMillis();
             log.info("{} 用时: {} ms", classMethod, (endTime - startTime));
+        }  catch (UnknownAccountException ae) {
+            log.info("用户名不存在");
+            return ResultBean.createByErrorMessage("用户名不存在");
+        } catch (AuthenticationException e) {
+            log.info("认证失败");
+            return ResultBean.createByErrorMessage("用户名或密码错误");
         } catch (BusinessProcessException e) {
             log.error("业务处理异常", e);
             return ResultBean.createByErrorMessage(e.getMessage());
