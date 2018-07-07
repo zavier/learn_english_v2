@@ -1,5 +1,7 @@
 package com.zavier.lenglish.config;
 
+import com.zavier.lenglish.common.EncryptConstants;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
@@ -11,7 +13,13 @@ public class SecurityConfig {
 
     @Bean
     public Realm realm() {
-        return new ShiroRealm();
+        ShiroRealm shiroRealm = new ShiroRealm();
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
+        matcher.setHashAlgorithmName(EncryptConstants.HASH_ALGORITHM_NAME);
+        matcher.setHashIterations(EncryptConstants.HASH_ITERATIONS);
+        matcher.setStoredCredentialsHexEncoded(true);
+        shiroRealm.setCredentialsMatcher(matcher);
+        return shiroRealm;
     }
 
     @Bean

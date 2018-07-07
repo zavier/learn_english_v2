@@ -1,14 +1,23 @@
 package com.zavier.lenglish.web;
 
 import com.zavier.lenglish.common.ResultBean;
+import com.zavier.lenglish.dao.UsersMapper;
+import com.zavier.lenglish.pojo.Users;
+import com.zavier.lenglish.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class CommonController {
+    @Autowired
+    private UsersMapper usersMapper;
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = "/error")
     public ResultBean<String> error(Exception e) {
@@ -29,22 +42,28 @@ public class CommonController {
         return ResultBean.createByNotLogin();
     }
 
-    @GetMapping(value = "/login")
-    @ResponseBody
-    public ResultBean<String> login() {
+    @PostMapping(value = "/sign-in")
+    public ResultBean<String> signIn(@RequestBody Users users) {
         Subject subject = SecurityUtils.getSubject();
         if(!subject.isAuthenticated()) {
-            UsernamePasswordToken token = new UsernamePasswordToken("name", "password", false);
+            UsernamePasswordToken token = new UsernamePasswordToken(users.getUsername(), users.getPassword(), false);
             try {
                 subject.login(token);
             } catch (UnknownAccountException ae) {
-                log.info("当前用户未登录");
+                log.info("用户名不存在");
                 return ResultBean.createByNotLogin();
             } catch (AuthenticationException e) {
                 log.info("认证失败");
                 return ResultBean.createByNotLogin();
             }
         }
+        return ResultBean.createBySuccess();
+    }
+
+    @PostMapping(value = "sign-up")
+    public ResultBean<String> signUp(@RequestBody Users users) {
+        Users encryptUserInfo = userService.encryptUserInfo(users);
+        usersMapper.insert(encryptUserInfo);
         return ResultBean.createBySuccess();
     }
 

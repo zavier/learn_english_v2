@@ -30,12 +30,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zavier.lenglish.pojo.Users">
-    insert into users (id, username, password, 
+    insert into users (username, password,
       password_salt, gmt_create, gmt_modify, 
       is_deleted)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{passwordSalt,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModify,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=TINYINT})
+    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{passwordSalt,jdbcType=VARCHAR}, now(), now(), 0)
   </insert>
   <insert id="insertSelective" parameterType="com.zavier.lenglish.pojo.Users">
     insert into users

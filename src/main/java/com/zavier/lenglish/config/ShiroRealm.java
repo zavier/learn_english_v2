@@ -14,11 +14,13 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -47,7 +49,8 @@ public class ShiroRealm extends JdbcRealm {
         }
 
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, users.getPassword(), getName());
-        info.setCredentialsSalt(ByteSource.Util.bytes(users.getPasswordSalt()));
+        // 由于注册的时候使用的盐为「用户名+盐」，且数据库中只存储了盐的后半部分（不包含用户名），所以这里需要自己拼接一下
+        info.setCredentialsSalt(ByteSource.Util.bytes(users.getUsername() + users.getPasswordSalt()));
         return info;
     }
 
