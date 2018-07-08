@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zavier.lenglish.dao.AnswerRecordMapper">
+  <resultMap id="BaseResultMap" type="com.zavier.lenglish.pojo.AnswerRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="knowledge_id" jdbcType="INTEGER" property="knowledgeId" />
+    <result column="users_id" jdbcType="INTEGER" property="usersId" />
+    <result column="user_answer" jdbcType="VARCHAR" property="userAnswer" />
+    <result column="answer_type" jdbcType="TINYINT" property="answerType" />
+    <result column="is_right" jdbcType="TINYINT" property="isRight" />
+    <result column="question_batch" jdbcType="VARCHAR" property="questionBatch" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, gmt_create, gmt_modified, is_deleted, knowledge_id, users_id, user_answer, answer_type, 
+    is_right, question_batch
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from le_answer_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from le_answer_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zavier.lenglish.pojo.AnswerRecord">
+    insert into le_answer_record (id, gmt_create, gmt_modified, 
+      is_deleted, knowledge_id, users_id, 
+      user_answer, answer_type, is_right, 
+      question_batch)
+    values (#{id,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=TINYINT}, #{knowledgeId,jdbcType=INTEGER}, #{usersId,jdbcType=INTEGER}, 
+      #{userAnswer,jdbcType=VARCHAR}, #{answerType,jdbcType=TINYINT}, #{isRight,jdbcType=TINYINT}, 
+      #{questionBatch,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zavier.lenglish.pojo.AnswerRecord">
+    insert into le_answer_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+      <if test="knowledgeId != null">
+        knowledge_id,
+      </if>
+      <if test="usersId != null">
+        users_id,
+      </if>
+      <if test="userAnswer != null">
+        user_answer,
+      </if>
+      <if test="answerType != null">
+        answer_type,
+      </if>
+      <if test="isRight != null">
+        is_right,
+      </if>
+      <if test="questionBatch != null">
+        question_batch,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="knowledgeId != null">
+        #{knowledgeId,jdbcType=INTEGER},
+      </if>
+      <if test="usersId != null">
+        #{usersId,jdbcType=INTEGER},
+      </if>
+      <if test="userAnswer != null">
+        #{userAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="answerType != null">
+        #{answerType,jdbcType=TINYINT},
+      </if>
+      <if test="isRight != null">
+        #{isRight,jdbcType=TINYINT},
+      </if>
+      <if test="questionBatch != null">
+        #{questionBatch,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zavier.lenglish.pojo.AnswerRecord">
+    update le_answer_record
+    <set>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="knowledgeId != null">
+        knowledge_id = #{knowledgeId,jdbcType=INTEGER},
+      </if>
+      <if test="usersId != null">
+        users_id = #{usersId,jdbcType=INTEGER},
+      </if>
+      <if test="userAnswer != null">
+        user_answer = #{userAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="answerType != null">
+        answer_type = #{answerType,jdbcType=TINYINT},
+      </if>
+      <if test="isRight != null">
+        is_right = #{isRight,jdbcType=TINYINT},
+      </if>
+      <if test="questionBatch != null">
+        question_batch = #{questionBatch,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zavier.lenglish.pojo.AnswerRecord">
+    update le_answer_record
+    set gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=TINYINT},
+      knowledge_id = #{knowledgeId,jdbcType=INTEGER},
+      users_id = #{usersId,jdbcType=INTEGER},
+      user_answer = #{userAnswer,jdbcType=VARCHAR},
+      answer_type = #{answerType,jdbcType=TINYINT},
+      is_right = #{isRight,jdbcType=TINYINT},
+      question_batch = #{questionBatch,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

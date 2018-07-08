@@ -38,7 +38,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM le_knowledge
-        WHERE 1 = 1
+        WHERE is_deleted = 0
         <if test="chinese != null">
             and chinese like concat('%', #{chinese}, '%')
         </if>
@@ -208,5 +208,19 @@
       source = #{source,jdbcType=TINYINT},
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
-  </update>
+    </update>
+    <select id="count" resultType="int">
+        SELECT
+        count(*)
+        from le_knowledge
+        where is_deleted = 0
+    </select>
+    <select id="selectRandom" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM le_knowledge
+        where is_deleted = 0
+        limit #{limit}
+        offset #{offset}
+    </select>
 </mapper>

@@ -28,4 +28,7 @@ public interface KnowledgeMapper {
 
     int updateByPrimaryKey(Knowledge record);
 
+    int count();
+
+    List<Knowledge> selectRandom(@Param("offset") int offset, @Param("limit") int limit);
 }

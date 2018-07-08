@@ -11,6 +11,7 @@ import com.zavier.lenglish.common.enums.KnowledgeDifficultyEnum;
 import com.zavier.lenglish.common.enums.KnowledgeSourceEnum;
 import com.zavier.lenglish.dao.KnowledgeMapper;
 import com.zavier.lenglish.param.KnowledgeSearchParam;
+import com.zavier.lenglish.param.QuestionSearchParam;
 import com.zavier.lenglish.pojo.Knowledge;
 import com.zavier.lenglish.service.KnowledgeService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.checkerframework.checker.units.qual.K;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -37,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -251,6 +254,41 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         int i = knowledgeMapper.updateByPrimaryKeySelective(knowledge);
         if (i != 1) {
             throw new BusinessProcessException("发布失败, knowledge:" + JSON.toJSONString(knowledge));
+        }
+    }
+
+    @Override
+    public List<Knowledge> getRandomKnowledge(int size) {
+        if (size <= 0) {
+            throw new BusinessProcessException("必须指定获取数量");
+        }
+        int count = knowledgeMapper.count();
+        if (size >= count) {
+            List<Knowledge> knowledges = knowledgeMapper.selectRandom(0, count);
+            return knowledges;
+        }
+        int max = count - size;
+        int offset = new Random().nextInt(max);
+        int limit = size;
+        List<Knowledge> knowledges = knowledgeMapper.selectRandom(offset, limit);
+        return knowledges;
+    }
+
+    /**
+     * 过滤掉另一种语言
+     * @param needEnglish
+     * @param knowledges
+     */
+    @Override
+    public void filterOtherLanguage(boolean needEnglish, List<Knowledge> knowledges) {
+        if (needEnglish) {
+            for (Knowledge knowledge : knowledges) {
+                knowledge.setChinese("");
+            }
+        } else {
+            for (Knowledge knowledge : knowledges) {
+                knowledge.setEnglish("");
+            }
         }
     }
 }

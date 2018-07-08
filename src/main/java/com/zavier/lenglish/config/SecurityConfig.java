@@ -28,6 +28,7 @@ public class SecurityConfig {
 
         chainDefinition.addPathDefinition("/user/**", "authc");
         chainDefinition.addPathDefinition("/knowledge/**", "authc");
+        chainDefinition.addPathDefinition("/question/**", "authc");
         chainDefinition.addPathDefinition("/admin/**", "authc, roles[admin]");
         chainDefinition.addPathDefinition("/docs/**", "authc, perms[document:read]");
         chainDefinition.addPathDefinition("/**", "anon");
