@@ -18,6 +18,25 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
+-- Table structure for le_answer_record
+-- ----------------------------
+DROP TABLE IF EXISTS `le_answer_record`;
+CREATE TABLE `le_answer_record`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `gmt_create` datetime(0) NOT NULL,
+  `gmt_modified` datetime(0) NOT NULL,
+  `is_deleted` tinyint(4) NOT NULL DEFAULT 0,
+  `knowledge_id` int(10) UNSIGNED NOT NULL,
+  `users_id` int(10) UNSIGNED NOT NULL,
+  `user_answer` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户答案',
+  `answer_type` tinyint(4) NOT NULL COMMENT '答案是中文还是英文  0:英文，1:中文',
+  `is_right` tinyint(4) NOT NULL COMMENT '答案是否正确',
+  `question_batch` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '问题编码（批次）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+
+-- ----------------------------
 -- Table structure for le_knowledge
 -- ----------------------------
 DROP TABLE IF EXISTS `le_knowledge`;
