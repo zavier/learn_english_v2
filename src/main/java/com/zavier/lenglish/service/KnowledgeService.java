@@ -1,5 +1,7 @@
 package com.zavier.lenglish.service;
 
+import com.zavier.lenglish.common.ResultBean;
+import com.zavier.lenglish.param.KnowledgeSearchParam;
 import com.zavier.lenglish.pojo.Knowledge;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -19,6 +21,8 @@ public interface KnowledgeService {
     void update(Knowledge knowledge);
 
     void delete(Knowledge knowledge);
+
+    ResultBean search(KnowledgeSearchParam param);
 
     Knowledge get(Integer id);
 

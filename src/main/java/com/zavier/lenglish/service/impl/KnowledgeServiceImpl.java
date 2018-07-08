@@ -1,12 +1,16 @@
 package com.zavier.lenglish.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.Splitter;
 import com.zavier.lenglish.common.BusinessProcessException;
+import com.zavier.lenglish.common.ResultBean;
 import com.zavier.lenglish.common.constants.SQLConstants;
 import com.zavier.lenglish.common.enums.KnowledgeDifficultyEnum;
 import com.zavier.lenglish.common.enums.KnowledgeSourceEnum;
 import com.zavier.lenglish.dao.KnowledgeMapper;
+import com.zavier.lenglish.param.KnowledgeSearchParam;
 import com.zavier.lenglish.pojo.Knowledge;
 import com.zavier.lenglish.service.KnowledgeService;
 import lombok.extern.slf4j.Slf4j;
@@ -212,6 +216,22 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         if (i != 1) {
             throw new BusinessProcessException("删除失败, knowledge:" + JSON.toJSONString(knowledge));
         }
+    }
+
+    @Override
+    public ResultBean search(KnowledgeSearchParam param) {
+        if (param == null) {
+            return ResultBean.createByErrorMessage("查询参数不能为空");
+        }
+        // 需要分页查询
+        if (param.getPage() != null) {
+            PageHelper.startPage(param.getPage(), param.getSize());
+            List<Knowledge> knowledges = knowledgeMapper.searchByParam(param);
+            PageInfo<Knowledge> customerPageInfo = new PageInfo<>(knowledges);
+            return ResultBean.createBySuccess(customerPageInfo);
+        }
+        List<Knowledge> knowledges = knowledgeMapper.searchByParam(param);
+        return ResultBean.createBySuccess(knowledges);
     }
 
     @Override

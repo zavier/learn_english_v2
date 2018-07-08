@@ -27,5 +27,5 @@ public class KnowledgeSearchParam {
 
     private Integer page;
 
-    private Integer size;
+    private Integer size = 10;
 }

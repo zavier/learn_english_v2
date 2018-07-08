@@ -1,5 +1,6 @@
 package com.zavier.lenglish.dao;
 
+import com.zavier.lenglish.param.KnowledgeSearchParam;
 import com.zavier.lenglish.pojo.Knowledge;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,7 +22,10 @@ public interface KnowledgeMapper {
 
     List<Knowledge> selectByIds(@Param("ids") Set<Integer> ids);
 
+    List<Knowledge> searchByParam(KnowledgeSearchParam param);
+
     int updateByPrimaryKeySelective(Knowledge record);
 
     int updateByPrimaryKey(Knowledge record);
+
 }

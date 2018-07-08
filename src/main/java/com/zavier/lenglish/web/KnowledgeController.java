@@ -3,6 +3,7 @@ package com.zavier.lenglish.web;
 import com.zavier.lenglish.common.BusinessProcessException;
 import com.zavier.lenglish.common.ResultBean;
 import com.zavier.lenglish.common.util.ValidatorUtil;
+import com.zavier.lenglish.param.KnowledgeSearchParam;
 import com.zavier.lenglish.pojo.Knowledge;
 import com.zavier.lenglish.pojo.Users;
 import com.zavier.lenglish.service.KnowledgeService;
@@ -69,6 +70,11 @@ public class KnowledgeController {
     public ResultBean<Knowledge> get(@RequestParam Integer id) {
         Knowledge knowledge = knowledgeService.get(id);
         return ResultBean.createBySuccess(knowledge);
+    }
+
+    @PostMapping("/search")
+    public ResultBean search(@RequestBody KnowledgeSearchParam param) {
+        return knowledgeService.search(param);
     }
 
     @GetMapping("publish")
