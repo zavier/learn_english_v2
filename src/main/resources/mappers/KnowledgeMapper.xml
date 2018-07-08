@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zavier.lenglish.dao.KnowledgeMapper">
-  <resultMap id="BaseResultMap" type="com.zavier.lenglish.pojo.Knowledge">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
-    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
-    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
-    <result column="creator" jdbcType="INTEGER" property="creator" />
-    <result column="modifier" jdbcType="INTEGER" property="modifier" />
-    <result column="english" jdbcType="VARCHAR" property="english" />
-    <result column="chinese" jdbcType="VARCHAR" property="chinese" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="difficulty_degree" jdbcType="TINYINT" property="difficultyDegree" />
-    <result column="is_published" jdbcType="TINYINT" property="isPublished" />
-    <result column="source" jdbcType="TINYINT" property="source" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.zavier.lenglish.pojo.Knowledge">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+        <result column="creator" jdbcType="INTEGER" property="creator" />
+        <result column="modifier" jdbcType="INTEGER" property="modifier" />
+        <result column="english" jdbcType="VARCHAR" property="english" />
+        <result column="chinese" jdbcType="VARCHAR" property="chinese" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="difficulty_degree" jdbcType="TINYINT" property="difficultyDegree" />
+        <result column="is_published" jdbcType="TINYINT" property="isPublished" />
+        <result column="source" jdbcType="TINYINT" property="source" />
+    </resultMap>
+    <sql id="Base_Column_List">
     id, gmt_create, gmt_modified, is_deleted, creator, modifier, english, chinese, remark, difficulty_degree,
     is_published, source
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from le_knowledge
-    where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectByIds" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List" />
-    FROM le_knowledge
-    where id IN
-    <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
-      #{id}
-    </foreach>
-  </select>
-  <update id="deleteByPrimaryKey" parameterType="com.zavier.lenglish.pojo.Knowledge">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from le_knowledge
+        where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM le_knowledge
+        where id IN
+        <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <update id="deleteByPrimaryKey" parameterType="com.zavier.lenglish.pojo.Knowledge">
     update le_knowledge
     set is_deleted = 1,
     modifier = #{modifier, jdbcType=INTEGER},
     gmt_modified = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <insert id="insert" parameterType="com.zavier.lenglish.pojo.Knowledge" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.zavier.lenglish.pojo.Knowledge" useGeneratedKeys="true" keyProperty="id">
     insert into le_knowledge (id, gmt_create, gmt_modified, 
       is_deleted, creator, modifier, 
       english, chinese, difficulty_degree, 
@@ -53,109 +53,124 @@
       #{isPublished,jdbcType=TINYINT}, #{source,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zavier.lenglish.pojo.Knowledge" useGeneratedKeys="true" keyProperty="id">
-    insert into le_knowledge
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      gmt_create,
-      gmt_modified,
-      <if test="isDeleted != null">
-        is_deleted,
-      </if>
-      <if test="creator != null">
-        creator,
-      </if>
-      <if test="modifier != null">
-        modifier,
-      </if>
-      <if test="english != null">
-        english,
-      </if>
-      <if test="chinese != null">
-        chinese,
-      </if>
-      <if test="difficultyDegree != null">
-        difficulty_degree,
-      </if>
-      <if test="isPublished != null">
-        is_published,
-      </if>
-      <if test="source != null">
-        source,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      now(),
-      now(),
-      <if test="isDeleted != null">
-        #{isDeleted,jdbcType=TINYINT},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=INTEGER},
-      </if>
-      <if test="modifier != null">
-        #{modifier,jdbcType=INTEGER},
-      </if>
-      <if test="english != null">
-        #{english,jdbcType=VARCHAR},
-      </if>
-      <if test="chinese != null">
-        #{chinese,jdbcType=VARCHAR},
-      </if>
-      <if test="difficultyDegree != null">
-        #{difficultyDegree,jdbcType=TINYINT},
-      </if>
-      <if test="isPublished != null">
-        #{isPublished,jdbcType=TINYINT},
-      </if>
-      <if test="source != null">
-        #{source,jdbcType=TINYINT},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zavier.lenglish.pojo.Knowledge">
-    update le_knowledge
-    <set>
-      gmt_modified = now(),
-      <if test="isDeleted != null">
-        is_deleted = #{isDeleted,jdbcType=TINYINT},
-      </if>
-      <if test="modifier != null">
-        modifier = #{modifier,jdbcType=INTEGER},
-      </if>
-      <if test="english != null">
-        english = #{english,jdbcType=VARCHAR},
-      </if>
-      <if test="chinese != null">
-        chinese = #{chinese,jdbcType=VARCHAR},
-      </if>
-      <if test="difficultyDegree != null">
-        difficulty_degree = #{difficultyDegree,jdbcType=TINYINT},
-      </if>
-      <if test="isPublished != null">
-        is_published = #{isPublished,jdbcType=TINYINT},
-      </if>
-      <if test="source != null">
-        source = #{source,jdbcType=TINYINT},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.zavier.lenglish.pojo.Knowledge">
+    <insert id="insertBatch">
+        insert into le_knowledge (id, gmt_create, gmt_modified,
+        is_deleted, creator, modifier,
+        english, chinese, difficulty_degree,
+        is_published, source, remark
+        )
+        values
+        <foreach collection="knowledges" item="knowledge" separator=",">
+            (#{knowledge.id,jdbcType=INTEGER}, now(), now(),
+            0, #{knowledge.creator,jdbcType=INTEGER}, #{knowledge.modifier,jdbcType=INTEGER},
+            #{knowledge.english,jdbcType=VARCHAR}, #{knowledge.chinese,jdbcType=VARCHAR}, #{knowledge.difficultyDegree,jdbcType=TINYINT},
+            #{knowledge.isPublished,jdbcType=TINYINT}, #{knowledge.source,jdbcType=TINYINT}, #{knowledge.remark,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertSelective" parameterType="com.zavier.lenglish.pojo.Knowledge" useGeneratedKeys="true" keyProperty="id">
+        insert into le_knowledge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            gmt_create,
+            gmt_modified,
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="english != null">
+                english,
+            </if>
+            <if test="chinese != null">
+                chinese,
+            </if>
+            <if test="difficultyDegree != null">
+                difficulty_degree,
+            </if>
+            <if test="isPublished != null">
+                is_published,
+            </if>
+            <if test="source != null">
+                source,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            now(),
+            now(),
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=INTEGER},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=INTEGER},
+            </if>
+            <if test="english != null">
+                #{english,jdbcType=VARCHAR},
+            </if>
+            <if test="chinese != null">
+                #{chinese,jdbcType=VARCHAR},
+            </if>
+            <if test="difficultyDegree != null">
+                #{difficultyDegree,jdbcType=TINYINT},
+            </if>
+            <if test="isPublished != null">
+                #{isPublished,jdbcType=TINYINT},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.zavier.lenglish.pojo.Knowledge">
+        update le_knowledge
+        <set>
+            gmt_modified = now(),
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=TINYINT},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=INTEGER},
+            </if>
+            <if test="english != null">
+                english = #{english,jdbcType=VARCHAR},
+            </if>
+            <if test="chinese != null">
+                chinese = #{chinese,jdbcType=VARCHAR},
+            </if>
+            <if test="difficultyDegree != null">
+                difficulty_degree = #{difficultyDegree,jdbcType=TINYINT},
+            </if>
+            <if test="isPublished != null">
+                is_published = #{isPublished,jdbcType=TINYINT},
+            </if>
+            <if test="source != null">
+                source = #{source,jdbcType=TINYINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.zavier.lenglish.pojo.Knowledge">
     update le_knowledge
     set gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},

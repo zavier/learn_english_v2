@@ -9,6 +9,7 @@ import com.zavier.lenglish.service.KnowledgeService;
 import com.zavier.lenglish.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -77,6 +79,21 @@ public class KnowledgeController {
         knowledge.setId(id);
         knowledge.setIsPublished((byte) 1);
         knowledgeService.update(knowledge);
+        return ResultBean.createBySuccess();
+    }
+
+    @PostMapping("import-excel")
+    public ResultBean<String> importExcel(@RequestParam("file")MultipartFile file) {
+        Users currentUser = userService.getCurrentUser();
+        try {
+            knowledgeService.importExcel(currentUser.getId(), file);
+        } catch (IOException e) {
+            log.error("上传文件处理失败", e);
+            throw new BusinessProcessException("上传文件处理失败");
+        } catch (InvalidFormatException e) {
+            log.error("上传文件处理失败", e);
+            throw new BusinessProcessException("上传文件处理失败");
+        }
         return ResultBean.createBySuccess();
     }
 

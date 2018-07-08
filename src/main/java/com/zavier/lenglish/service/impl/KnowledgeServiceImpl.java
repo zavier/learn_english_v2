@@ -9,24 +9,34 @@ import com.zavier.lenglish.common.enums.KnowledgeSourceEnum;
 import com.zavier.lenglish.dao.KnowledgeMapper;
 import com.zavier.lenglish.pojo.Knowledge;
 import com.zavier.lenglish.service.KnowledgeService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class KnowledgeServiceImpl implements KnowledgeService {
     @Autowired
@@ -49,7 +59,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         // 设置字体为红色样式
         CellStyle style = wb.createCellStyle();
         Font font = wb.createFont();
-        font.setColor(HSSFColor.RED.RED.index);
+        font.setColor(IndexedColors.RED.index);
         style.setFont(font);
 
         Cell englishCell = sheet.getRow(0).getCell(1);
@@ -57,6 +67,84 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         Cell chineseCell = sheet.getRow(0).getCell(2);
         chineseCell.setCellStyle(style);
         return wb;
+    }
+
+    @Override
+    public void importExcel(Integer userId, MultipartFile file) throws IOException, InvalidFormatException {
+        String originalFilename = file.getOriginalFilename();
+        if (! originalFilename.endsWith(".xlsx")) {
+            throw new BusinessProcessException("文件格式错误，应为 xlsx 格式文件");
+        }
+        InputStream inputStream = file.getInputStream();
+        Workbook wb = WorkbookFactory.create(inputStream);
+        Sheet sheet = wb.getSheetAt(0);
+        checkHead(sheet);
+        List<Knowledge> knowledges = converExcel2Knowledge(userId, sheet);
+        if (CollectionUtils.isEmpty(knowledges)) {
+            return;
+        }
+        log.info("批量导入的knowledge为：{}", JSON.toJSONString(knowledges));
+        knowledgeMapper.insertBatch(knowledges);
+    }
+
+    private List<Knowledge> converExcel2Knowledge(Integer userId, Sheet sheet) {
+        int lastRowNum = sheet.getLastRowNum();
+        log.info("导入的Excel最大行数为:{}", lastRowNum);
+        List<Knowledge> knowledges = new ArrayList<>();
+        for (int i = 1; i <= lastRowNum; i++) {
+            Row row = sheet.getRow(i);
+            String english = row.getCell(1).getStringCellValue();
+            String chinese = row.getCell(2).getStringCellValue();
+            String difficulty = row.getCell(3).getStringCellValue();
+            String isPublished = row.getCell(4).getStringCellValue();
+            String source = row.getCell(5).getStringCellValue();
+            Knowledge knowledge = new Knowledge();
+            knowledge.setCreator(userId);
+            knowledge.setModifier(userId);
+            knowledge.setEnglish(english);
+            knowledge.setChinese(chinese);
+            knowledge.setDifficultyDegree(KnowledgeDifficultyEnum.getCode(difficulty).byteValue());
+            knowledge.setIsPublished(StringUtils.equals("是", isPublished) ? (byte) 1 : (byte) 0);
+            knowledge.setSource(KnowledgeSourceEnum.getCode(source).byteValue());
+            knowledge.setRemark("");
+
+            knowledges.add(knowledge);
+        }
+        return knowledges;
+    }
+
+    private void checkHead(Sheet sheet) {
+        Row row = sheet.getRow(0);
+        String cell0 = row.getCell(0).getStringCellValue();
+        if (! StringUtils.equals(cell0, "序号")) {
+            log.error("expect:{}, actual:{}", cell0, "序号");
+            throw new BusinessProcessException("Excel内容格式错误");
+        }
+        String cell1 = row.getCell(1).getStringCellValue();
+        if (! StringUtils.equals(cell1, "英文")) {
+            log.error("expect:{}, actual:{}", cell1, "英文");
+            throw new BusinessProcessException("Excel内容格式错误");
+        }
+        String cell2 = row.getCell(2).getStringCellValue();
+        if (! StringUtils.equals(cell2, "中文")) {
+            log.error("expect:{}, actual:{}", cell2, "中文");
+            throw new BusinessProcessException("Excel内容格式错误");
+        }
+        String cell3 = row.getCell(3).getStringCellValue();
+        if (! StringUtils.equals(cell3, "难易度")) {
+            log.error("expect:{}, actual:{}", cell3, "难易度");
+            throw new BusinessProcessException("Excel内容格式错误");
+        }
+        String cell4 = row.getCell(4).getStringCellValue();
+        if (! StringUtils.equals(cell4, "是否已发布")) {
+            log.error("expect:{}, actual:{}", cell4, "是否已发布");
+            throw new BusinessProcessException("Excel内容格式错误");
+        }
+        String cell5 = row.getCell(5).getStringCellValue();
+        if (! StringUtils.equals(cell5, "来源")) {
+            log.error("expect:{}, actual:{}", cell5, "来源");
+            throw new BusinessProcessException("Excel内容格式错误");
+        }
     }
 
     private Workbook generateExcel(List<Knowledge> knowledges) {

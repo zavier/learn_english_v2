@@ -13,6 +13,8 @@ public interface KnowledgeMapper {
 
     int insert(Knowledge record);
 
+    int insertBatch(@Param("knowledges") List<Knowledge> knowledges);
+
     int insertSelective(Knowledge record);
 
     Knowledge selectByPrimaryKey(Integer id);
