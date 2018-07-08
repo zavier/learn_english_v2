@@ -86,8 +86,18 @@ public class KnowledgeController {
             return;
         }
         Workbook workbook = knowledgeService.exportExcel(knowledgeIds);
+        write2OutputStream(response, workbook, "Knowledge.xlsx");
+    }
+
+    @GetMapping("excel-template")
+    public void exportExcelTemplate(HttpServletResponse response) {
+        Workbook workbook = knowledgeService.exportExcelTemplate();
+        write2OutputStream(response, workbook, "KnowledgeTemplate.xlsx");
+    }
+
+    private void write2OutputStream(HttpServletResponse response, Workbook workbook, String filename) {
         try (ServletOutputStream outputStream = response.getOutputStream();) {
-            response.setHeader("Content-disposition", "attachment;filename=Knowledge.xlsx");
+            response.setHeader("Content-disposition", "attachment;filename=" + filename);
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             workbook.write(outputStream);
         } catch (IOException e) {

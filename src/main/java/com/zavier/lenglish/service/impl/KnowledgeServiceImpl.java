@@ -11,9 +11,14 @@ import com.zavier.lenglish.pojo.Knowledge;
 import com.zavier.lenglish.service.KnowledgeService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +39,24 @@ public class KnowledgeServiceImpl implements KnowledgeService {
             throw new BusinessProcessException("无所需的导出数据, ids:" + ids);
         }
         return generateExcel(knowledges);
+    }
+
+    @Override
+    public Workbook exportExcelTemplate() {
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("sheet 1");
+        wrapExcelHead(sheet);
+        // 设置字体为红色样式
+        CellStyle style = wb.createCellStyle();
+        Font font = wb.createFont();
+        font.setColor(HSSFColor.RED.RED.index);
+        style.setFont(font);
+
+        Cell englishCell = sheet.getRow(0).getCell(1);
+        englishCell.setCellStyle(style);
+        Cell chineseCell = sheet.getRow(0).getCell(2);
+        chineseCell.setCellStyle(style);
+        return wb;
     }
 
     private Workbook generateExcel(List<Knowledge> knowledges) {
