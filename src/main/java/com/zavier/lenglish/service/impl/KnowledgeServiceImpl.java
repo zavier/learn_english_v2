@@ -204,6 +204,13 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 
     @Override
     public void update(Knowledge knowledge) {
+        Knowledge dbKnowledge = knowledgeMapper.selectByPrimaryKey(knowledge.getId());
+        if (dbKnowledge == null) {
+            throw new BusinessProcessException("修改的knowledge不存在");
+        }
+        if (dbKnowledge.getCreator().intValue() != knowledge.getModifier().intValue()) {
+            throw new BusinessProcessException("这个条目不属于您，不能修改");
+        }
         int i = knowledgeMapper.updateByPrimaryKeySelective(knowledge);
         if (i != 1) {
             throw new BusinessProcessException("更新失败，knowledge:" + JSON.toJSONString(knowledge));
