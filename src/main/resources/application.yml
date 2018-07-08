@@ -8,6 +8,10 @@ spring:
     url: jdbc:mysql://localhost:3306/learn_english?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: root
+  redis:
+    host: localhost
+    port: 6379
+    database: 15
 
 # MyBatis配置
 mybatis:
