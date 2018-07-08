@@ -1,8 +1,11 @@
 package com.zavier.lenglish.service;
 
 import com.zavier.lenglish.pojo.Knowledge;
+import org.apache.poi.ss.usermodel.Workbook;
 
 public interface KnowledgeService {
+    Workbook exportExcel(String ids);
+
     Knowledge add(Knowledge knowledge);
 
     void update(Knowledge knowledge);

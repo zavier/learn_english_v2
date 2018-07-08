@@ -1,4 +1,4 @@
-package com.zavier.lenglish.common;
+package com.zavier.lenglish.common.constants;
 
 /**
  * 加密相关常量

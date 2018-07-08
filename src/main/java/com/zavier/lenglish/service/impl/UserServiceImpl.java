@@ -1,7 +1,7 @@
 package com.zavier.lenglish.service.impl;
 
 import com.zavier.lenglish.common.BusinessProcessException;
-import com.zavier.lenglish.common.EncryptConstants;
+import com.zavier.lenglish.common.constants.EncryptConstants;
 import com.zavier.lenglish.common.util.CacheUtil;
 import com.zavier.lenglish.common.util.ValidatorUtil;
 import com.zavier.lenglish.dao.UserRolesMapper;

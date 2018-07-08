@@ -1,6 +1,6 @@
 package com.zavier.lenglish.config;
 
-import com.zavier.lenglish.common.EncryptConstants;
+import com.zavier.lenglish.common.constants.EncryptConstants;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;

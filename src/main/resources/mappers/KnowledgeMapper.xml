@@ -23,7 +23,16 @@
     select 
     <include refid="Base_Column_List" />
     from le_knowledge
-    where id = #{id,jdbcType=INTEGER}
+    where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByIds" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM le_knowledge
+    where id IN
+    <foreach collection="ids" item="id" index="index" open="(" separator="," close=")">
+      #{id}
+    </foreach>
   </select>
   <update id="deleteByPrimaryKey" parameterType="com.zavier.lenglish.pojo.Knowledge">
     update le_knowledge
